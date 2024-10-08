@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Correo</title>
+</head>
+<body>
+    <h1>Editar Correo</h1>
+    <form method="POST">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" value="{{ correo.nombre }}">
+        <br>
+        <label for="correo">Correo:</label>
+        <input type="email" id="correo" name="correo" value="{{ correo.correo }}">
+        <br>
+        <label for="mensaje">Mensaje:</label>
+        <textarea id="mensaje" name="mensaje">{{ correo.mensaje }}</textarea>
+        <br>
+        <input type="submit" value="Guardar">
+    </form>
+</body>
+</html>

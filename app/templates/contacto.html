@@ -1,7 +1,23 @@
 {%  extends './base.html'%}
 
 {%block contenido%}
-    <p>Estamos en la plantilla de contacto
+<p>Estamos en la plantilla de contacto</p>
+<!-- Define un formulario html -->
+<!-- Action especifica la url a la que se enviaran los datos -->
+<form action="" method="post"> 
+    <!-- Se pude el nombre al usuario -->
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre"><br><br>
 
-    </p>
+    <!-- se pide el correo electronico al usuario -->
+    <label for="correo">Correo electrónico:</label>
+    <input type="email" id="correo" name="correo"><br><br>
+
+    <!-- se pide el mensaje al usuario -->
+    <label for="mensaje">Mensaje:</label>
+    <textarea id="mensaje" name="mensaje"></textarea><br><br>
+
+    <!-- Boton de enviar -->
+    <input type="submit" value="Enviar">
+</form>
 {% endblock %}
