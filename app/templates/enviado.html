@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Mensaje Enviado</title>
-</head>
-<body>
-    <h1>Mensaje Enviado con Éxito</h1>
+{%  extends './base.html'%}
+
+{%block contenido%}
     <p>Gracias por contactarnos. Nos pondremos en contacto contigo lo antes posible.</p>
-    <a href="{{ url_for('index') }}">Volver al Index</a>
-    <a href="{{ url_for('contacto') }}">Volver a Contacto</a>
-</body>
-</html>
+{% endblock %}

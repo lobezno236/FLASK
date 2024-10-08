@@ -1,5 +1,5 @@
 # Importar las bibliotecas necesarias para crear la aplicación Flask y enviar correos electrónicos
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mail import Mail, Message
 import sys
 sys.path.append('..')
@@ -10,23 +10,28 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo
 
 # MODELOS CREADOS EN ARCHIVOS
-from mail_config import MAIL_CONFIG
-import models
-from forms import RegistroForm
+from .config.mail_config import MAIL_CONFIG
+from .forms.forms import RegistroForm, LoginForm
+from .models.models import db, Usuario
+from . import app, bcrypt
+from app.config.config import INSTANCE_PATH
 
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'ADMIN123'
 
 app.config.update(MAIL_CONFIG)
 
 # Configurar la URI de la base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mensajes.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['INSTANCE_PATH'] = INSTANCE_PATH
+
+# Crear una instancia de la base de datos
+db.init_app(app)
 
 # Crear una instancia de la biblioteca de correo electrónico
 mail = Mail(app)
-
-# Crear una instancia de la base de datos
-db = SQLAlchemy(app)
 
 # Definir la tabla de la base de datos
 class Mensaje(db.Model):
@@ -38,6 +43,13 @@ class Mensaje(db.Model):
     def __repr__(self):
         return f'Mensaje({self.nombre}, {self.correo}, {self.mensaje})'
 
+# Definir Usuario
+# class Usuario(db.Model, UserMixin):
+#     id = db.Column(db.Integer, primary_key=True)
+#     nombre = db.Column(db.String(100), nullable=False)
+#     correo = db.Column(db.String(100), nullable=False, unique=True)
+#     password = db.Column(db.String(100), nullable=False)
+    
 # Crear la base de datos y la tabla
 with app.app_context():
     db.create_all()
@@ -53,14 +65,72 @@ def index():
     # Renderizar la página de inicio con los datos del diccionario
     return render_template('index.html', data=data)
 
-# Definir la ruta para el registro de usuarios
+# Definir la ruta de mensaje enviado
+@app.route('/enviado')
+def enviado():
+    data = {
+        'titulo': 'Mensaje Enviado',
+        'encabezado': 'Mensaje Enviado con Éxito'
+    }
+    print(data)  # Agregar este print para verificar el contenido de la variable data
+    return render_template('enviado.html', data=data)
+
+# Definir la ruta de registro
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
+    # Crear un formulario de registro
     form = RegistroForm()
+    # Verificar si se ha enviado el formulario
     if form.validate_on_submit():
-        # Código para registrar el usuario
+        # Obtener los datos del formulario
+        nombre = form.nombre.data
+        correo = form.correo.data
+        password = form.password.data
+        # Crear un nuevo usuario en la base de datos
+        nuevo_usuario = Usuario(nombre=nombre, correo=correo)
+        nuevo_usuario.set_password(password)
+        db.session.add(nuevo_usuario)
+        db.session.commit()
+        # Mostrar un mensaje de éxito
+        flash('Registro exitoso', 'success')
+        # Redireccionar a la página de login
         return redirect(url_for('login'))
-    return render_template('registro.html', form=form)
+    # Crear un diccionario con los datos que se utilizarán en la página de registro
+    data = {
+        'titulo': 'Registro',
+        'encabezado': 'Registro'
+    }
+    # Renderizar la página de registro con los datos del diccionario
+    return render_template('registro.html', data=data, form=form)
+
+# Definir la ruta de login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    # Crear un formulario de inicio de sesión
+    form = LoginForm()
+    # Verificar si se ha enviado el formulario
+    if form.validate_on_submit():
+        # Obtener los datos del formulario
+        correo = form.correo.data
+        password = form.password.data
+        # Verificar si el usuario existe en la base de datos
+        usuario = Usuario.query.filter_by(correo=correo).first()
+        # Verificar si la contraseña es correcta
+        if usuario and usuario.check_password(password):
+            # Iniciar sesión del usuario
+            login_user(usuario)
+            # Redireccionar a la página de inicio
+            return redirect(url_for('index'))
+        else:
+            # Mostrar un mensaje de error
+            flash('Correo electrónico o contraseña incorrectos')
+    # Crear un diccionario con los datos que se utilizarán en la página de login
+    data = {
+        'titulo': 'Login',
+        'encabezado': 'Login'
+    }
+    # Renderizar la página de login con los datos del diccionario
+    return render_template('login.html', data=data, form=form)
 
 # Definir la ruta para la página de contacto
 @app.route("/contacto", methods=["GET", "POST"])
@@ -93,7 +163,7 @@ def contacto():
         db.session.commit()
         
         # Devolver un mensaje de éxito a la página de contacto
-        return render_template('enviado.html')
+        return redirect(url_for('enviado'))
     
     # Crear un diccionario con los datos que se utilizarán en la página de contacto
     data = {
@@ -103,13 +173,18 @@ def contacto():
     # Renderizar la página de contacto con los datos del diccionario
     return render_template('contacto.html', data=data)
 
-# Definir la ruta para la página de correos
+# Definir la ruta de correos
 @app.route('/correos')
 def correos():
-    # Obtener todos los correos de la base de datos
+    # Obtener los correos de la base de datos
     correos = Mensaje.query.all()
-    # Renderizar la página de correos con los correos obtenidos
-    return render_template('correos.html', correos=correos)
+    # Crear un diccionario con los datos que se utilizarán en la página de correos
+    data = {
+        'titulo': 'Correos',
+        'encabezado': 'Correos'
+    }
+    # Renderizar la página de correos con los datos del diccionario
+    return render_template('correos.html', data=data, correos=correos)
 
 # Definir la ruta para eliminar un correo
 @app.route('/eliminar-correo/<int:id>')

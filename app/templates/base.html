@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{data.titulo}}</title>
+    <title>{{ data.titulo }}</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
 </head>
 <body>
     <a href="{{url_for('index')}}">Index</a>
     <a href="{{url_for('contacto')}}">Contacto</a>
     <a href="{{url_for('correos')}}">Correos</a>
+    <a href="{{url_for('login')}}">Login</a>
     <hr/>
-    <h1>{{data.encabezado}}</h1>
+    <h1>{{ data.encabezado }}</h1>
 
     {% block contenido%}
 

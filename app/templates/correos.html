@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Correos</title>
-</head>
-<body>
-    <h1>Correos</h1>
+{% extends './base.html' %}
+
+{% block contenido %}
     <ul>
     {% for correo in correos %}
         <li>
@@ -12,11 +8,7 @@
             <p>{{ correo.mensaje }}</p>
             <a href="{{ url_for('eliminar_correo', id=correo.id) }}">Eliminar</a>
             <a href="{{ url_for('editar_correo', id=correo.id) }}">Editar</a>
-            <br> <br>
-            <a href="{{ url_for('index') }}">Volver al Index</a>
-            <a href="{{ url_for('contacto') }}">Volver a Contacto</a>
         </li>
     {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}

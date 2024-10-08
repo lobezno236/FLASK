@@ -1,15 +1,6 @@
-<!-- registro.html -->
+{% extends './base.html' %}
 
-<!-- Encabezado de la página -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Registro</title>
-</head>
-
-<!-- Cuerpo de la página -->
-<body>
-    <h1>Registro</h1>
+{% block contenido %}
 
     <!-- Formulario de registro -->
     <form method="POST">
@@ -67,5 +58,4 @@
         <!-- Botón de envío -->
         {{ form.submit() }}
     </form>
-</body>
-</html>
+{% endblock %}
