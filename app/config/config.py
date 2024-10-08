@@ -1,1 +1,0 @@
-INSTANCE_PATH = 'C:/Users/lobez/OneDrive/Documentos/PROGRAMACION PRACTICA/FLASK/instance'

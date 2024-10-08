@@ -1,14 +1,19 @@
 {% extends './base.html' %}
 
 {% block contenido %}
-    <ul>
-    {% for correo in correos %}
-        <li>
-            {{ correo.nombre }} ({{ correo.correo }})
-            <p>{{ correo.mensaje }}</p>
-            <a href="{{ url_for('eliminar_correo', id=correo.id) }}">Eliminar</a>
-            <a href="{{ url_for('editar_correo', id=correo.id) }}">Editar</a>
-        </li>
-    {% endfor %}
-    </ul>
+    {% if not current_user.is_authenticated %}
+        <h1>Acceso denegado</h1>
+        <p>No tienes permiso para acceder a esta página. Por favor, <a href="{{ url_for('login') }}">inicia sesión</a> para continuar.</p>
+    {% else %}
+        <ul>
+        {% for correo in correos %}
+            <li>
+                {{ correo.nombre }} ({{ correo.correo }})
+                <p>{{ correo.mensaje }}</p>
+                <a href="{{ url_for('eliminar_correo', id=correo.id) }}">Eliminar</a>
+                <a href="{{ url_for('editar_correo', id=correo.id) }}">Editar</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

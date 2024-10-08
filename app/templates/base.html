@@ -9,9 +9,11 @@
 <body>
     <a href="{{url_for('index')}}">Index</a>
     <a href="{{url_for('contacto')}}">Contacto</a>
-    <a href="{{url_for('correos')}}">Correos</a>
     <a href="{{url_for('login')}}">Login</a>
-    <hr/>
+    <a href="{{url_for('correos')}}">Correos</a>
+    {% if current_user.is_authenticated %}
+    <li><a href="{{ url_for('logout') }}">Salir</a></li>
+    {% endif %}
     <h1>{{ data.encabezado }}</h1>
 
     {% block contenido%}
