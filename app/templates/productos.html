@@ -1,0 +1,14 @@
+<!-- productos.html -->
+
+{% extends "base.html" %}
+
+{% block contenido %}
+    <ul>
+    {% for producto in productos %}
+        <li>
+            {{ producto.nombre }} ({{ producto.precio }})
+            <a href="{{ url_for('producto_detalle_individual', id=producto.id) }}">Ver detalles</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

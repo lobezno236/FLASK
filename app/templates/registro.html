@@ -7,6 +7,18 @@
         <!-- Campo oculto para evitar ataques CSRF -->
         {{ form.hidden_tag() }}
 
+    <!-- Campo de Usuario -->
+    <label for="username">Usuario:</label>
+    {{ form.username() }}
+    <!-- Mensaje de error para el campo de usuario -->
+    {% if form.username.errors %}
+        <ul class="errors">
+            {% for error in form.username.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
         <!-- Campo de nombre -->
         <label for="nombre">Nombre:</label>
         {{ form.nombre() }}

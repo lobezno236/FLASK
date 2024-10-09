@@ -1,0 +1,11 @@
+<!-- producto_detalle_individual.html -->
+
+{% extends "base.html" %}
+
+{% block contenido %}
+    <h1>{{ producto.nombre }}</h1>
+    <p>Descripción: {{ producto.descripcion }}</p>
+    <p>Precio: {{ producto.precio }}</p>
+    <p>Categoría: {{ producto.categoria }}</p>
+    <p>Imagen: {{ producto.imagen }}</p>
+{% endblock %}

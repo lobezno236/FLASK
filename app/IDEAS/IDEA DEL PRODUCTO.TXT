@@ -1,0 +1,27 @@
+Definición del propósito
+
+El propósito de nuestra tienda en línea es permitir a los usuarios comprar productos en línea de manera segura y fácil. Queremos crear una experiencia de compra en línea agradable y fácil de usar para nuestros clientes.
+
+Funcionalidades
+
+Para lograr este propósito, necesitaremos implementar las siguientes funcionalidades:
+
+Catálogo de productos: Un catálogo de productos que permita a los usuarios ver y buscar productos.
+Detalles de productos: Páginas de detalles de productos que proporcionen información adicional sobre cada producto.
+Carrito de compras: Un carrito de compras que permita a los usuarios agregar y eliminar productos.
+Pago en línea: Un sistema de pago en línea seguro que permita a los usuarios pagar por sus compras.
+Registro y login: Un sistema de registro y login que permita a los usuarios crear cuentas y acceder a sus pedidos y información de cuenta.
+Gestión de pedidos: Un sistema de gestión de pedidos que permita a los administradores ver y gestionar los pedidos.
+Envío y entrega: Un sistema de envío y entrega que permita a los administradores gestionar el envío de los productos.
+Diseño
+
+Para diseñar nuestra tienda en línea, podemos utilizar un diseño responsivo que se adapte a diferentes dispositivos y tamaños de pantalla. También podemos utilizar un diseño minimalista y fácil de usar para que los usuarios puedan encontrar lo que buscan de manera rápida y fácil.
+
+Tecnologías
+
+Para desarrollar nuestra tienda en línea, podemos utilizar las siguientes tecnologías:
+
+Flask: Un framework de Python para desarrollar aplicaciones web.
+SQLAlchemy: Una biblioteca de Python para interactuar con bases de datos.
+Bootstrap: Un framework de CSS para diseñar interfaces de usuario responsivas.
+Stripe: Un servicio de pago en línea para procesar pagos.

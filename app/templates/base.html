@@ -1,3 +1,5 @@
+<!-- base.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,11 +11,16 @@
 <body>
     <a href="{{url_for('index')}}">Index</a>
     <a href="{{url_for('contacto')}}">Contacto</a>
-    <a href="{{url_for('login')}}">Login</a>
-    <a href="{{url_for('correos')}}">Correos</a>
+
     {% if current_user.is_authenticated %}
+    <a href="{{url_for('correos')}}">Correos</a>
     <li><a href="{{ url_for('logout') }}">Salir</a></li>
+    <a href="{{url_for('agregar_producto')}}">Agregar producto</a> 
+    <a href="{{url_for('productos')}}">Productos</a> 
+    {% else %}
+    <a href="{{url_for('login')}}">Login</a>
     {% endif %}
+
     <h1>{{ data.encabezado }}</h1>
 
     {% block contenido%}

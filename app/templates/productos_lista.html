@@ -1,0 +1,14 @@
+<!-- productos_lista.html -->
+
+<h1>Lista de productos</h1>
+
+<ul>
+    {% for producto in productos %}
+        <li>
+            {{ producto.nombre }} ({{ producto.precio }})
+            <a href="{{ url_for('producto_detalle', id=producto.id) }}">Ver detalles</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<a href="{{ url_for('agregar_producto') }}">Agregar producto</a>
