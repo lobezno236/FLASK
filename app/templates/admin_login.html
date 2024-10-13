@@ -1,0 +1,47 @@
+<!-- admin_login.html -->
+
+{% extends "base.html" %}
+
+{% block contenido %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title text-center">{{ data.titulo }}</h1>
+                        
+                        {% if get_flashed_messages() %}
+                            <div class="alert alert-danger">
+                                {{ get_flashed_messages() | join(' ') }}
+                            </div>
+                        {% endif %}
+
+                        <form action="" method="post" class="form-horizontal">
+                            {{ form.hidden_tag() }}
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label for="username_or_correo" class="form-control-label">Username o Correo:</label>
+                                    <input type="text" id="username_or_correo" name="username_or_correo" required class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label for="password" class="form-control-label">Contraseña:</label>
+                                    <input type="password" id="password" name="password" required class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="d-flex justify-content-center">
+                                    <input type="submit" value="Iniciar Sesión" class="btn btn-primary">
+                                </div>
+                            </div>
+                        </form>
+                        {% if error %}
+                            <p style="color: red;">{{ error }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

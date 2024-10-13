@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+  <h2>Órdenes</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Menú</h5>
+          <ul class="nav flex-column nav-pills">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('cliente_dashboard') }}">Perfil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('direcciones') }}">Direcciones</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('tarjeta_credito') }}">Tarjeta de crédito</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('autentificacion') }}">Autentificación</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ url_for('ordenes') }}">Órdenes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}">Salir</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-lg-10 offset-lg-1"> <!-- Ajusta el ancho y el offset -->
+        <div class="card" style="height: 400px;"> <!-- Ajusta la altura -->
+          <div class="card-body">
+            <h5 class="card-title">Mis Órdenes</h5>
+            <p>Aquí se mostrarán las órdenes del usuario</p>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Número de orden</th>
+                  <th>Total</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Aquí se mostrarán las órdenes del usuario -->
+                <!-- Puedes iterar sobre una lista de órdenes y mostrar cada una -->
+                <!-- Por ejemplo: -->
+                {% for orden in ordenes %}
+                <tr>
+                  <td>{{ orden.fecha }}</td>
+                  <td>{{ orden.numero_orden }}</td>
+                  <td>{{ orden.total }}</td>
+                  <td>{{ orden.estado }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

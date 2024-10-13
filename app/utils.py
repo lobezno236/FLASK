@@ -1,6 +1,7 @@
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
+import requests
 
 bcrypt = Bcrypt()
 
@@ -21,3 +22,4 @@ def contacto(mail, correo, mensaje):
         print('Mensaje enviado con éxito')
     except Exception as e:
         print(e)
+        

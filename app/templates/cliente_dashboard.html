@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+  <h2>{{ data.encabezado }}, {{ user.nombre }}!</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Menú</h5>
+          <ul class="nav flex-column nav-pills">
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ url_for('cliente_dashboard') }}">Perfil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('direcciones') }}">Direcciones</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('tarjeta_credito') }}">Tarjeta de crédito</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('autentificacion') }}">Autentificación</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('ordenes') }}">Órdenes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}">Salir</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Información personal</h5>
+          <p><strong>Nombre:</strong> {{ user.nombre }}</p>
+          <p><strong>Apellido:</strong> {{ user.apellido }}</p>
+          <p><strong>Correo electrónico:</strong> {{ user.correo }}</p>
+          <p><strong>Teléfono:</strong> {{ user.telefono }}</p>
+          <p><strong>Documento de identidad:</strong> {{ user.documento_identidad }}</p>
+          <p><strong>Género:</strong> {{ user.genero }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

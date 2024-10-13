@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+  <h2>{{ data.encabezado }}, {{ user.nombre }}!</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Menú</h5>
+          <ul class="nav flex-column nav-pills">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('cliente_dashboard') }}">Perfil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('direcciones') }}">Direcciones</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ url_for('tarjeta_credito') }}">Tarjeta de crédito</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('autentificacion') }}">Autentificación</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('ordenes') }}">Órdenes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}">Salir</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Tarjeta de crédito</h5>
+          {% if user.tarjeta_credito %}
+            <p><strong>Número de tarjeta:</strong> {{ user.tarjeta_credito.numero }}</p>
+            <p><strong>Tipo de tarjeta:</strong> {{ user.tarjeta_credito.tipo }}</p>
+            <p><strong>Vencimiento:</strong> {{ user.tarjeta_credito.vencimiento }}</p>
+            <p><strong>Código de seguridad:</strong> {{ user.tarjeta_credito.codigo_seguridad }}</p>
+          {% else %}
+            <p>No tiene una tarjeta de crédito agregada.</p>
+            <a href="{{ url_for('agregar_tarjeta_credito') }}" class="btn btn-primary">Agregar tarjeta de crédito</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+<!-- error.html -->
+
+{% extends './base.html' %}
+
+{% block contenido %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-center">Error</h2>
+            <p class="text-center">{{ error }}</p>
+            <p class="text-center">Por favor, inténtelo de nuevo.</p>
+            <a href="{{ url_for('login_cliente') }}" class="btn btn-primary">Volver a intentar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
