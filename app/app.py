@@ -2,9 +2,9 @@ from flask import Flask, render_template, redirect, url_for, request, flash, abo
 from flask_mail import Mail, Message
 from flask_wtf.csrf import CSRFProtect
 from mail_config import MAIL_CONFIG
-from forms import LoginForm, RegistroForm
+from forms import LoginForm, RegistroForm, EditarPerfilForm, EditarDireccionForm, ModificarContraseñaForm
 from utils import bcrypt, db
-from models import Usuario, Correo, Producto, Administrador
+from models import Usuario, Correo, Producto, Administrador, Direcciones
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, verify_jwt_in_request
 from datetime import timedelta
 import requests
@@ -145,6 +145,59 @@ def cliente_dashboard():
         # Manejar cualquier excepción que ocurra
         print(f"Error: {e}")  # Add a print statement to check the error message
         return jsonify({'error': 'Error al obtener el ID del usuario'}), 500
+    
+@app.route('/editar_perfil', methods=['GET', 'POST'])
+@jwt_required()
+def editar_perfil():
+    data = {
+        'titulo': 'Dashboard del cliente',
+        'encabezado': 'Bienvenido(a) al dashboard'
+    }
+    
+    form = EditarPerfilForm()
+    
+    if form.validate_on_submit():
+        # Obtener los datos del formulario
+        nombre = form.nombre.data
+        apellido = form.apellido.data
+        correo = form.correo.data
+        telefono = form.telefono.data
+        documento_identidad = form.documento_identidad.data
+        genero = form.genero.data
+        
+        # Obtener el usuario actual
+        user = Usuario.query.get(get_jwt_identity())
+        
+        # Actualizar la información del usuario
+        user.nombre = nombre
+        user.apellido = apellido
+        user.correo = correo
+        user.telefono = telefono
+        user.documento_identidad = documento_identidad
+        user.genero = genero
+        
+        # Guardar los cambios en la base de datos
+        db.session.commit()
+        
+        flash('Perfil actualizado con éxito', 'success')
+        return redirect(url_for('cliente_dashboard'))  # Redirigir a la página de perfil
+    
+    # Si es un GET, mostrar el formulario con los datos actuales
+    user_id = get_jwt_identity()
+    user = Usuario.query.get(user_id)
+    form.nombre.data = user.nombre
+    form.apellido.data = user.apellido
+    form.correo.data = user.correo
+    form.telefono.data = user.telefono
+    form.documento_identidad.data = user.documento_identidad
+    form.genero.data = user.genero
+    
+    return render_template('editar_perfil.html', data=data, form=form)
+
+    # Si es un GET, mostrar el formulario con los datos actuales
+    user_id = get_jwt_identity()
+    user = Usuario.query.get(user_id)
+    return render_template('editar_perfil.html', data=data, user=user)
 
 @app.route('/ordenes', methods=['GET'])
 @jwt_required()
@@ -155,14 +208,58 @@ def ordenes():
     }
     return render_template('ordenes.html', data=data)
 
-@app.route('/autentificacion', methods=['GET'])
+@app.route('/autentificacion', methods=['GET', 'POST'])
 @jwt_required()
 def autentificacion():
+    form = ModificarContraseñaForm()
     data = {
         'titulo': 'Dashboard del cliente',
         'encabezado': 'Bienvenido(a) al dashboard'
     }
-    return render_template('autentificacion.html', data=data)
+    if form.validate_on_submit():
+        # Procesa la solicitud
+        pass
+    return render_template('autentificacion.html', data=data, form=form)
+
+@app.route('/modificar_contraseña', methods=['GET', 'POST'])
+@jwt_required()
+def modificar_contraseña():
+    data = {
+        'titulo': 'Dashboard del cliente',
+        'encabezado': 'Bienvenido(a) al dashboard'
+    }
+    
+    form = ModificarContraseñaForm()
+    
+    if form.validate_on_submit():
+        # Obtener los datos del formulario
+        contraseña_actual = form.contraseña_actual.data
+        nueva_contraseña = form.nueva_contraseña.data
+        confirmar_contraseña = form.confirmar_contraseña.data
+        
+        # Obtener el usuario actual
+        user = Usuario.query.get(get_jwt_identity())
+        
+        # Verificar si la contraseña actual es correcta
+        if not bcrypt.check_password_hash(user.password, contraseña_actual):
+            flash('La contraseña actual es incorrecta', 'error')
+            return redirect(url_for('modificar_contraseña'))
+        
+        # Verificar si la nueva contraseña y la confirmación coinciden
+        if nueva_contraseña != confirmar_contraseña:
+            flash('La nueva contraseña y la confirmación no coinciden', 'error')
+            return redirect(url_for('modificar_contraseña'))
+        
+        # Actualizar la contraseña del usuario
+        user.password = bcrypt.generate_password_hash(nueva_contraseña).decode('utf-8')
+        
+        # Guardar los cambios en la base de datos
+        db.session.commit()
+        
+        flash('Contraseña modificada con éxito', 'success')
+        return redirect(url_for('cliente_dashboard'))
+    
+    return render_template('modificar_contraseña.html', data=data, form=form)
 
 @app.route('/tarjeta_credito', methods=['GET'])
 @jwt_required()
@@ -173,7 +270,7 @@ def tarjeta_credito():
     }
     return render_template('tarjeta_credito.html', data=data)
 
-@app.route('/agregar_tarjeta_credito', methods=['GET'])
+@app.route('/agregar_tarjeta_credito', methods=['GET', 'POST'])
 @jwt_required()
 def agregar_tarjeta_credito():
     data = {
@@ -189,16 +286,113 @@ def direcciones():
         'titulo': 'Dashboard del cliente',
         'encabezado': 'Bienvenido(a) al dashboard'
     }
-    return render_template('direcciones.html', data=data)
+    user_id = get_jwt_identity()
+    direcciones = Direcciones.query.filter_by(user_id=user_id).all()
+    
+    return render_template('direcciones.html', data=data, direcciones=direcciones)
 
-@app.route('/agregar_direccion', methods=['GET'])
+@app.route('/agregar_direccion', methods=['GET', 'POST'])
 @jwt_required()
 def agregar_direccion():
     data = {
         'titulo': 'Dashboard del cliente',
         'encabezado': 'Bienvenido(a) al dashboard'
     }
+    
+    if request.method == 'POST':
+        calle = request.form['calle']
+        numero = request.form['numero']
+        ciudad = request.form['ciudad']
+        estado = request.form['estado']
+        pais = request.form['pais']
+        codigo_postal = request.form['codigo_postal']
+        
+        nueva_direccion = Direcciones(
+            calle=calle,
+            numero=numero,
+            ciudad=ciudad,
+            estado=estado,
+            pais=pais,
+            codigo_postal=codigo_postal,
+            user_id=get_jwt_identity()
+        )
+        
+        db.session.add(nueva_direccion)
+        db.session.commit()
+        
+        return redirect(url_for('direcciones'))
+    
     return render_template('agregar_direccion.html', data=data)
+
+@app.route('/editar_direccion/<int:direccion_id>', methods=['GET', 'POST'])
+@jwt_required()
+def editar_direccion(direccion_id):
+    data = {
+        'titulo': 'Editar dirección',
+        'encabezado': 'Editar dirección'
+    }
+    
+    direccion = Direcciones.query.get(direccion_id)
+    
+    if direccion is None:
+        flash('La dirección no existe', 'error')
+        return redirect(url_for('direcciones'))
+    
+    form = EditarDireccionForm()
+    
+    if form.validate_on_submit():
+        # Obtener los datos del formulario
+        calle = form.calle.data
+        numero = form.numero.data
+        ciudad = form.ciudad.data
+        estado = form.estado.data
+        pais = form.pais.data
+        codigo_postal = form.codigo_postal.data
+        
+        # Actualizar la información de la dirección
+        direccion.calle = calle
+        direccion.numero = numero
+        direccion.ciudad = ciudad
+        direccion.estado = estado
+        direccion.pais = pais
+        direccion.codigo_postal = codigo_postal
+        
+        try:
+            # Guardar los cambios en la base de datos
+            db.session.commit()
+            flash('Dirección actualizada con éxito', 'success')
+        except Exception as e:
+            db.session.rollback()
+            flash('Error al actualizar la dirección: ' + str(e), 'error')
+        
+        return redirect(url_for('direcciones'))  # Redirigir a la página de editar dirección
+    
+    # Si es un GET, mostrar el formulario con los datos actuales
+    form.calle.data = direccion.calle
+    form.numero.data = direccion.numero
+    form.ciudad.data = direccion.ciudad
+    form.estado.data = direccion.estado
+    form.pais.data = direccion.pais
+    form.codigo_postal.data = direccion.codigo_postal
+    
+    return render_template('editar_direccion.html', data=data, form=form, direccion=direccion)
+
+@app.route('/eliminar_direccion/<int:direccion_id>', methods=['GET', 'POST'])
+@jwt_required()
+def eliminar_direccion(direccion_id):
+    direccion = Direcciones.query.get(direccion_id)
+    if direccion:
+        db.session.delete(direccion)
+        db.session.commit()
+        flash('Dirección eliminada con éxito')
+    return redirect(url_for('direcciones'))
+
+@app.route('/guardar_cambios/<int:direccion_id>', methods=['POST'])
+@jwt_required()
+def guardar_cambios(direccion_id):
+    # Código para guardar cambios en la dirección
+    flash('Cambios guardados con éxito')
+    return redirect(url_for('direcciones'))
 
 @app.route('/logout')
 @jwt_required()

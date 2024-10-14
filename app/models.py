@@ -148,18 +148,31 @@ class Producto(db.Model):
     def __repr__(self):
         return f'Producto({self.nombre}, {self.descripcion}, {self.precio}, {self.categoria}, {self.imagen})'
 
-class TarjetaCredito(db.Model):
-    __tablename__ = 'tarjeta_credito'
+
+class Direcciones(db.Model):
+    __tablename__ = 'direcciones'
 
     id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'))
-    usuario = db.relationship('Usuario', backref=db.backref('tarjeta_credito', cascade='all, delete-orphan'))
+    user_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'))
+    user = db.relationship('Usuario', backref=db.backref('direcciones', lazy=True))
+    calle = db.Column(db.String(100), nullable=False)
     numero = db.Column(db.String(20), nullable=False)
-    tipo = db.Column(db.String(20), nullable=False)
-    vencimiento = db.Column(db.Date, nullable=False)
-    codigo_seguridad = db.Column(db.String(4), nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    ciudad = db.Column(db.String(50), nullable=False)
+    estado = db.Column(db.String(50), nullable=False)
+    pais = db.Column(db.String(50), nullable=False)
+    codigo_postal = db.Column(db.String(20), nullable=False)
 
     def __repr__(self):
-        return f'TarjetaCredito({self.numero}, {self.tipo}, {self.vencimiento}, {self.codigo_seguridad})'
+        return f'Direcciones({self.calle}, {self.numero}, {self.ciudad}, {self.estado}, {self.pais}, {self.codigo_postal})'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'calle': self.calle,
+            'numero': self.numero,
+            'ciudad': self.ciudad,
+            'estado': self.estado,
+            'pais': self.pais,
+            'codigo_postal': self.codigo_postal
+        }

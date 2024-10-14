@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, HiddenField, DateField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, HiddenField, DateField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo, Regexp, Length
 import requests
 
@@ -28,3 +28,28 @@ class RegistroForm(FlaskForm):
     password = PasswordField('Contraseña', validators=[DataRequired()])
     confirm_password = PasswordField('Confirmar contraseña', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Registrarse')
+    
+class EditarPerfilForm(FlaskForm):
+    nombre = StringField('Nombre', validators=[DataRequired()])
+    apellido = StringField('Apellido', validators=[DataRequired()])
+    correo = StringField('Correo electrónico', validators=[DataRequired()])
+    telefono = StringField('Teléfono', validators=[DataRequired()])
+    documento_identidad = StringField('Documento de identidad', validators=[DataRequired()])
+    genero = StringField('Género', validators=[DataRequired()])
+    submit = SubmitField('Guardar cambios')
+    
+class EditarDireccionForm(FlaskForm):
+    calle = StringField('Calle', validators=[DataRequired()])
+    numero = StringField('Número', validators=[DataRequired()])
+    ciudad = StringField('Ciudad', validators=[DataRequired()])
+    estado = StringField('Estado', validators=[DataRequired()])
+    pais = StringField('País', validators=[DataRequired()])
+    codigo_postal = StringField('Código postal', validators=[DataRequired()])
+    submit = SubmitField('Guardar cambios')
+    
+class ModificarContraseñaForm(FlaskForm):
+    contraseña_actual = PasswordField('Contraseña actual', validators=[DataRequired()])
+    nueva_contraseña = PasswordField('Nueva contraseña', validators=[DataRequired()])
+    confirmar_contraseña = PasswordField('Confirmar contraseña', validators=[DataRequired()])
+    submit = SubmitField('Modificar contraseña')
+    

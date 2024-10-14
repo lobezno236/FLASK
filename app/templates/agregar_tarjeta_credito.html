@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Menú</h5>
+                <ul class="nav flex-column nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_dashboard') }}">Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('direcciones') }}">Direcciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('tarjeta_credito') }}">Tarjeta de crédito</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('autentificacion') }}">Autentificación</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('ordenes') }}">Órdenes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Salir</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Agregar tarjeta de crédito</h5>
+                <p>Aquí puedes agregar una nueva tarjeta de crédito</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

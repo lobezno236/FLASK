@@ -42,6 +42,7 @@
           <p><strong>Teléfono:</strong> {{ user.telefono }}</p>
           <p><strong>Documento de identidad:</strong> {{ user.documento_identidad }}</p>
           <p><strong>Género:</strong> {{ user.genero }}</p>
+          <a href="{{ url_for('editar_perfil') }}" class="btn btn-primary">Editar perfil</a> <!-- Botón para editar perfil -->
         </div>
       </div>
     </div>

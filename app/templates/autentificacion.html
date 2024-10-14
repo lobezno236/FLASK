@@ -38,32 +38,40 @@
           <div class="card-body">
             <h5 class="card-title">Autentificación</h5>
             <p>Aquí se mostrarán los datos de autentificación del usuario</p>
-            <div class="form-group">
+            <div id="current_password_section">
               <label for="current_password">Contraseña actual:</label>
-              <input type="password" id="current_password" value="********" disabled>
+              <input type="password" id="current_password" value="********" disabled class="form-control">
             </div>
             <div id="new_password_section" style="display: none;">
-              <div class="form-group">
-                <label for="new_password">Nueva contraseña:</label>
-                <input type="password" id="new_password" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="confirm_password">Confirmar nueva contraseña:</label>
-                <input type="password" id="confirm_password" class="form-control">
-              </div>
-              <a href="#" class="btn btn-primary">Modificar contraseña</a>
+              <form action="{{ url_for('modificar_contraseña') }}" method="POST">
+                {{ form.hidden_tag() }} <!-- Agrega el token CSRF -->
+                <div class="form-group">
+                  {{ form.contraseña_actual.label }} {{ form.contraseña_actual(class_='form-control') }}
+                </div>
+                <div class="form-group">
+                  {{ form.nueva_contraseña.label }} {{ form.nueva_contraseña(class_='form-control') }}
+                </div>
+                <div class="form-group">
+                  {{ form.confirmar_contraseña.label }} {{ form.confirmar_contraseña(class_='form-control') }}
+                </div>
+                <div class="form-group">
+                  {{ form.submit(class_='btn btn-primary') }}
+                </div>
+              </form>
             </div>
             <a href="#" id="edit_password_btn" class="btn btn-primary">Editar contraseña</a>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <script>
-    document.getElementById('edit_password_btn').addEventListener('click', function() {
-      document.getElementById('new_password_section').style.display = 'block';
-      this.style.display = 'none'; // Oculta el botón de editar
-    });
-  </script>
-{% endblock %}
+    
+    <script>
+      document.getElementById('edit_password_btn').addEventListener('click', function() {
+        // Oculta la sección de la contraseña actual
+        document.getElementById('current_password_section').style.display = 'none';
+        // Muestra la sección para ingresar la nueva contraseña
+        document.getElementById('new_password_section').style.display = 'block';
+        this.style.display = 'none'; // Oculta el botón de editar
+      });
+    </script>
+    {% endblock %}

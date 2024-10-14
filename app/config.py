@@ -2,6 +2,7 @@ INSTANCE_PATH = 'C:/Users/lobez/OneDrive/Documentos/PROGRAMACION PRACTICA/FLASK/
 
 import os
 
+
 class Config:
     DEBUG = True
     TESTING = False
