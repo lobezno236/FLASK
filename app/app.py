@@ -76,6 +76,11 @@ def index():
         pass
     return render_template('index.html', data=data, current_user=current_user)
 
+@app.route('/carrito')
+def carrito():
+    # Código para mostrar el contenido del carrito
+    return render_template('carrito.html')
+
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     data = {'titulo': 'Registro'}

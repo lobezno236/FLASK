@@ -11,6 +11,7 @@
 </head>
 <body>
 
+        
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="{{url_for('index')}}">Mi Tienda</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,13 +32,16 @@
                     <a class="nav-link" href="{{ url_for('cliente_dashboard') }}">Mi Perfil</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('carrito') }}">Mi Carrito</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('logout') }}">Salir</a>
                 </li>
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('login_cliente')}}">Login</a>
                 </li>
-
+    
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('registro')}}">Registro</a>
                 </li>
@@ -45,7 +49,83 @@
             </ul>
         </div>
     </nav>
-    
+
+<!-- Menú de categorías -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 0.2rem 1rem; border-bottom: 1px solid #ccc; background-color: #f9f9f9;">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Productos
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Electrónica</a>
+                    <a class="dropdown-item" href="#">Ropa y accesorios</a>
+                    <a class="dropdown-item" href="#">Hogar y jardín</a>
+                    <a class="dropdown-item" href="#">Deportes y fitness</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Marcas
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Apple</a>
+                    <a class="dropdown-item" href="#">Samsung</a>
+                    <a class="dropdown-item" href="#">Nike</a>
+                    <a class="dropdown-item" href="#">Adidas</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Tecnología
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Computadoras</a>
+                    <a class="dropdown-item" href="#">Tabletas</a>
+                    <a class="dropdown-item" href="#">Smartphones</a>
+                    <a class="dropdown-item" href="#">Accesorios</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Hogar
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Muebles</a>
+                    <a class="dropdown-item" href="#">Electrodomésticos</a>
+                    <a class="dropdown-item" href="#">Decoración</a>
+                    <a class="dropdown-item" href="#">Jardín</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Deportes
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Fútbol</a>
+                    <a class="dropdown-item" href="#">Baloncesto</a>
+                    <a class="dropdown-item" href="#">Tenis</a>
+                    <a class="dropdown-item" href="#">Golf</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Viajes
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Paquetes turísticos</a>
+                    <a class="dropdown-item" href="#">Hoteles</a>
+                    <a class="dropdown-item" href="#">Vuelos</a>
+                    <a class="dropdown-item" href="#">Alquiler de coches</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="mb-4"></div>    
+
     <div class="container">
         {% block contenido %}
         {% endblock %}
